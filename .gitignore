@@ -1,0 +1,13 @@
+.vscode/**
+.git/**
+temp/**
+.DS_Store/**
+*.png
+*.jpg
+*.swf
+*.psd
+*.gif
+*.ico
+*.wav
+*.rar
+test*

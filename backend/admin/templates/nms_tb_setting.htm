@@ -1,0 +1,363 @@
+<!-- $Id: goods_info.htm 17126 2010-04-23 10:30:26Z liuhui $ -->
+
+{include file="pageheader.htm"}
+<script src="../js/transport.js"></script>
+<link href="styles/nms_style.css" rel="stylesheet" type="text/css" />
+<div class="tab-div">
+  <div id="tabbody-div" class="tbbg" >
+    <form method='post' id="form" name="form" action="shops.php?act=tb_update">
+      <table cellpadding="4" cellspacing="0" border="0" class="table-form">
+        <tr >
+          <td colspan=3><div align="left" style="font-weight:bold; border-bottom:#000000 1px dashed">插件信息</div></td>
+        </tr>
+        <tr >
+          <th>插件版本：</th>
+          <td>{$version}
+            <div style="display:inline; ">
+              <input name="button" type="button" style="margin-left:10px;" onclick="NmsInstall()" value="安装数据"  />
+            </div></td>
+        </tr>
+        <tr>
+          <th> 授权码：</th>
+          <td><input {if $action_list eq 'all'} type="text" {else}type="password" readonly="readonly"{/if} value="{$vo.content.session_key}" class="textinput" name="session_key" size="65">
+            <input style="margin-left:10px;" type="button" value="验证授权" onclick="VeriUser()"  /></td>
+        </tr>
+        <tr>
+          <th> 可用功能：</th>
+          <td><span>{$gn_list}</span> 
+        </tr>
+        <tr>
+        <tr>
+          <th> 当日流量：</th>
+          <td><span>{$day_api}</span> 
+        </tr>
+        <tr>
+          <td colspan=3><div align="left" style="font-weight:bold;border-bottom: #000 1px dashed">淘宝客设置</div></td>
+        </tr>
+        <th></th>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <th width="150"> App key：</th>
+          <td><input type="text" value="{$user_data.app_key}" class="textinput" name="app_key" size="12" {if $action_list neq "all"}readonly="true"{/if}>
+            <span>&nbsp;<a href="http://media.alimama.com/" target="_blank"><font color="#FF0000">申请App key</font></a></td>
+        </tr>
+        <tr>
+          <th> App Secret：</th>
+          <td><input {if $action_list eq "all"} type="text" {else}type="password" readonly="readonly"{/if} value="{$user_data.app_secret}" class="textinput" name="app_secret" size="40" ></td>
+        </tr>
+        <tr>
+          <th> 淘点金PID：</th>
+          <td><input type="text" value="{$user_data.code_tdj}" class="textinput" name="code_tdj" size="36" {if $action_list neq "all"}readonly="true"{/if}>
+          </td>
+        </tr>
+        <tr {$dpy_fy}>
+          <td colspan=3><div align="left" style="font-weight:bold;border-bottom:#000000 1px dashed">翻译设置</div></td>
+        </tr>
+        <tr {$dpy_fy}>
+          <th> 翻译引擎：</th>
+          <td><select name="engine"  onchange="changeAction_fy()">
+              <option value="2" {if $user_data.engine == '2'}selected{/if}>百度</option>
+              <option value="3" {if $user_data.engine == '3'}selected{/if}>微软</option>
+            </select>
+          </td>
+        </tr>
+        <tr {$dpy_fy}>
+          <th> 相关设置：</th>
+          <td>			
+			<div id="bd_appid_lab" {if $user_data.engine != '2'}style="display:none"{/if}>
+				<font>APP_ID：</font>
+				<input type="text" value="{$user_data.bd_appid}" class="textinput" name="bd_appid" size="10">
+				<font>secret_key：</font>
+				<input  {if $action_list eq "all"} type="text" {else}type="password" readonly="readonly"{/if} value="{$user_data.bd_seckey}" class="textinput" name="bd_seckey" size="10">
+			</div>
+			<div id="ms_appid_lab" {if $user_data.engine != '3'}style="display:none"{/if}>	
+				<font>APP_ID：</font>
+				<input type="text" value="{$user_data.ms_appid}" class="textinput" name="ms_appid" size="10">
+			</div>
+		</td>
+        </tr>
+        <tr {$dpy_fy}>
+          <th>相关说明：</th>
+		  <td style="color:#f00">
+		  <font id="bdsm" {if $user_data.engine != '2'}style="display:none;"{/if}>填写你申请百度的API。<a href="http://api.fanyi.baidu.com/api/trans/product/index" target="_blank"><font color="#FF0000">点击申请</font></a></font>
+		  <font id="mssm" {if $user_data.engine != '3'}style="display:none"{/if}>填写你申请微软的PID。<a href="http://cn.bing.com/developers" target="_blank"><font color="#FF0000">点击申请</font></a></font>
+          </td>
+        </tr>
+        <tr {$dpy_fy}>
+          <th> 选择语言：</th>
+          <td><select name="lang">
+              <option value="">选择语言 </option>
+              <option value="en" {if $user_data.lang == 'en'}selected{/if}>英语</option>
+              <option value="yue" {if $user_data.lang == 'yue'}selected{/if}>粤语</option>
+              <option value="jp" {if $user_data.lang == 'jp'}selected{/if}>日语</option>
+              <option value="kor" {if $user_data.lang == 'kor'}selected{/if}>韩语</option>
+              <option value="fra" {if $user_data.lang == 'fra'}selected{/if}>法语</option>
+              <option value="spa" {if $user_data.lang == 'spa'}selected{/if}>西班牙语</option>
+              <option value="th" {if $user_data.lang == 'th'}selected{/if}>泰语</option>
+              <option value="ara" {if $user_data.lang == 'ara'}selected{/if}>阿拉伯语</option>
+              <option value="ru" {if $user_data.lang == 'ru'}selected{/if}>俄语</option>
+              <option value="pt" {if $user_data.lang == 'pt'}selected{/if}>葡萄牙语</option>
+              <option value="de" {if $user_data.lang == 'de'}selected{/if}>德语</option>
+              <option value="it" {if $user_data.lang == 'it'}selected{/if}>意大利语</option>
+              <option value="el" {if $user_data.lang == 'el'}selected{/if}>希腊语</option>
+              <option value="nl" {if $user_data.lang == 'nl'}selected{/if}>荷兰语</option>
+              <option value="pl" {if $user_data.lang == 'pl'}selected{/if}>波兰语</option>
+              <option value="bul" {if $user_data.lang == 'bul'}selected{/if}>保加利亚语</option>
+              <option value="est" {if $user_data.lang == 'est'}selected{/if}>爱沙尼亚语</option>
+              <option value="dan" {if $user_data.lang == 'dan'}selected{/if}>丹麦语</option>
+              <option value="fin" {if $user_data.lang == 'fin'}selected{/if}>芬兰语</option>
+              <option value="cs" {if $user_data.lang == 'cs'}selected{/if}>捷克语</option>
+              <option value="rom" {if $user_data.lang == 'rom'}selected{/if}>罗马尼亚语</option>
+              <option value="slo" {if $user_data.lang == 'slo'}selected{/if}>斯洛文尼亚语</option>
+              <option value="swe" {if $user_data.lang == 'swe'}selected{/if}>瑞典语</option>
+              <option value="hu" {if $user_data.lang == 'hu'}selected{/if}>匈牙利语</option>
+              <option value="cht" {if $user_data.lang == 'cht'}selected{/if}>繁体中文</option>
+            </select>
+          </td>
+        </tr>
+        <tr >
+          <th></th>
+        </tr>
+        <tr >
+          <td colspan=3><div align="left" style="font-weight:bold;border-bottom:#000000 1px dashed">本地化设置</div></td>
+        </tr>
+        <tr>
+          <th>图片空间：</th>
+          <td><select name="space" id="selAction" onchange="changeAction()">
+              <option value="" {if $user_data.space == ''}selected{/if}>本地服务器</option>
+              <option value="7" {if $user_data.space == '7'}selected{/if}>七牛云存储</option>
+              <option value="OSS" {if $user_data.space == 'OSS'}selected{/if}>OSS云存储</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>相关设置：</th>
+          <td>
+		  <div id="ztqz" {if $user_data.space != ''}style="display:none"{/if}>
+		  <font >主图前缀：</font>
+            <input type="text" value="{$user_data.zhu_address}" class="textinput" name="zhu_address"   size="10">
+            <font id="msqz" >描述图前缀：</font>
+            <input type="text" value="{$user_data.xiang_address}" class="textinput" name="xiang_address"  size="10">
+			<input type="checkbox" value="1" class="textinput" name="img_dl" size="10" {if $user_data.img_dl} checked="checked" {/if}>代理
+		  </div>
+		  <div id="7access" {if $user_data.space != '7'}style="display:none"{/if}>	
+            <font>access_key：</font>
+            <input type="text" value="{$user_data.access_key}" class="textinput" name="access_key"  style="min-width:100px!important;" size="10">
+            <font>secret_key：</font>
+            <input type="text" value="{$user_data.secret_key}" class="textinput" name="secret_key"  style="min-width:100px!important;" size="10">
+            <font>域名：</font>
+            <input type="text" value="{$user_data.qn_host}" class="textinput" name="qn_host"  style="min-width:100px!important;" size="10">
+            <font>空间名：</font>
+            <input type="text" value="{$user_data.kj_name}" class="textinput" name="kj_name"  style="min-width:100px!important;" size="10">
+			</div>
+		  <div id="Oaccess" {if $user_data.space != 'O'}style="display:none"{/if}>	
+            <font>access_key：</font>
+            <input type="text" value="{$user_data.OSS_access_key}" class="textinput" name="OSS_access_key"  style="min-width:100px!important;" size="10">
+            <font>secret_key：</font>
+            <input type="text" value="{$user_data.OSS_secret_key}" class="textinput" name="OSS_secret_key"  style="min-width:100px!important;" size="10">
+            <font>域名：</font>
+            <input type="text" value="{$user_data.OSS_host}" class="textinput" name="OSS_host"  style="min-width:100px!important;" size="10">
+            <font>空间名：</font>
+            <input type="text" value="{$user_data.OSS_bucket}" class="textinput" name="OSS_bucket"  style="min-width:100px!important;" size="10">
+			</div>
+          </td>
+        </tr>
+        <tr>
+          <th>相关说明：</th>
+		  <td style="color:#f00">
+		  <font id="ztsm" {if $user_data.space != ''}style="display:none;"{/if}>图片地址前缀一般保留空白即可，只有当本地化后图片不显示时才进行纠正。</font>
+		  <font id="7nsm" {if $user_data.space != '7'}style="display:none;"{/if}>
+		  * 填写七牛提供的key、域名和空间名，申请方法：<a href="http://www.niumos.com/article.php?id=31" target="_blank">点击这里</a><span {$dpy_qn}>，* 本功能需要另付费开通，请联系采集插件客服购买！</span></font>
+		  <font id="OSSsm" {if $user_data.space != 'O'}style="display:none;"{/if}>
+		  * 填写阿里云OSS提供的key、域名和空间名，申请方法：<a href="http://www.niumos.com/article.php?id=31" target="_blank">点击这里</a><span {$dpy_oss}>，* 本功能需要另付费开通，请联系采集插件客服购买！</span></font>
+		  </td>
+		  </tr>
+        <tr >
+          <th> 本地化选项：</th>
+          <td>
+            <input type="checkbox" value="1" class="textinput" name="locimg_desc" size="10" {if $user_data.locimg_desc} checked="checked" {/if}>
+            详情图
+            <input type="checkbox" value="1" class="textinput" name="locimg_goods" size="10" {if $user_data.locimg_goods} checked="checked" {/if}>
+            商品主图
+            <input type="checkbox" value="1" class="textinput" name="locimg_gallery" size="10" {if $user_data.locimg_gallery} checked="checked" {/if}>
+            相册图
+            <input type="checkbox" value="1" class="textinput" name="locimg_attr" size="10" {if $user_data.locimg_attr} checked="checked" {/if}>
+            属性图 
+        </tr>
+        <tr >
+          <td colspan=3><div align="left" style="font-weight:bold;border-bottom:#000000 1px dashed">其他设置</div></td>
+        </tr>
+        <tr >
+          <th> 内存设置：</th>
+          <td><input type="text" value="{$user_data.memory_limit}" class="textinput" name="memory_limit" size="10">M
+            <span> (设置采集时可用的服务器内存，某些服务器已内定内存，此处设置无效)</span>
+          </td>
+        </tr>
+        <tr>
+          <th> 价格变动：</th>
+          <td><input type="text" value="{$user_data.price_change}" class="textinput" name="price_change" size="10">
+            <span> (在数字前面写[ + - * / ]表示算法，如原价调高1.2倍写成*1.2)</span> </td>
+        </tr>
+        <tr>
+          <th> 默认下架：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="not_sale" size="10" {if $user_data.not_sale} checked="checked" {/if}>
+            下架 <span>&nbsp;&nbsp;&nbsp;(勾选后采集的商品为下架状态)</span> </td>
+        </tr>
+        <tr>
+          <th> 去淘宝购买：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="to_taobao" size="10" {if $user_data.to_taobao} checked="checked" {/if}>
+            默认打叉 <span>&nbsp;&nbsp;&nbsp;(勾选后采集的商品将设置为：不去淘宝购买，否则自动设置)</span> </td>
+        </tr>
+        <tr style="display:none">
+          <th> 商品详情：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="not_desc" size="10" {if $user_data.not_desc} checked="checked" {/if}>
+            不采集详情 <span>&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" value="1" class="textinput" name="only_img" size="10" {if $user_data.only_img} checked="checked" {/if}>
+            不采集文字&nbsp;&nbsp;&nbsp;(勾选后不采集描述详情的文字内容)</span> </td>
+        </tr>
+        <tr>
+          <th> 商品货号：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="get_sn" size="10" {if $user_data.get_sn} checked="checked" {/if}>
+            提取淘宝货号 <span>&nbsp;&nbsp;&nbsp;(勾选后自动提取淘宝商品的货号、款号)</span> </td>
+        </tr>
+        <tr>
+          <th> 商品品牌：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="not_brand" size="10" {if $user_data.not_brand} checked="checked" {/if}>
+            不采集品牌 <span>&nbsp;&nbsp;&nbsp;(勾选后不采集商品的品牌)</span> </td>
+        </tr>
+        <tr>
+          <th> 商品货品：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="get_pro" size="10" {if $user_data.get_pro} checked="checked" {/if}>
+            不采集货品 <span>&nbsp;&nbsp;&nbsp;(勾选后不生成商品的货品)</span> </td>
+        </tr>
+        <tr>
+          <th> 是否采集库存：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="get_kucun" size="10" {if $user_data.get_kucun} checked="checked" {/if}>
+            不采集库存 </td>
+        </tr>
+        <tr>
+          <th> 是否采集佣金：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="is_yongjin" size="10" {if $user_data.is_yongjin} checked="checked" {/if}>
+            采集佣金 
+        <tr>
+          <th> 更新选项：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="biaoti" size="10" {if $user_data.biaoti} checked="checked" {/if}>
+            标题
+            <input type="checkbox" value="1" class="textinput" name="pinpai" size="10" {if $user_data.pinpai} checked="checked" {/if}>
+            品牌
+            <input type="checkbox" value="1" class="textinput" name="jiage" size="10" {if $user_data.jiage} checked="checked" {/if}>
+            价格
+            <input type="checkbox" value="1" class="textinput" name="miaoshu" size="10" {if $user_data.miaoshu} checked="checked" {/if}>
+            描述
+            <input type="checkbox" value="1" class="textinput" name="zhutu" size="10" {if $user_data.zhutu} checked="checked" {/if}>
+            主图
+            <input type="checkbox" value="1" class="textinput" name="xiangce" size="10" {if $user_data.xiangce} checked="checked" {/if}>
+            相册
+            <input type="checkbox" value="1" class="textinput" name="xiaoliang" size="10" {if $user_data.xiaoliang} checked="checked" {/if}>
+            销量 
+            <input type="checkbox" value="1" class="textinput" name="kucun" size="10" {if $user_data.kucun} checked="checked" {/if}>
+            库存 
+            <input type="checkbox" value="1" class="textinput" name="yongjin" size="10" {if $user_data.yongjin} checked="checked" {/if}>
+            佣金 
+        </tr>
+        <tr>
+          <th> 评论生成订单：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="is_order" size="10" {if $user_data.is_order} checked="checked" {/if}>
+            生成订单 <span>&nbsp;&nbsp;&nbsp;(勾选后采集评论同时生成订单和购买的用户（购买记录）)</span> </td>
+        </tr>
+        <tr>
+          <th> 淘宝客商品：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="only_tbk" size="10" {if $user_data.only_tbk} checked="checked" {/if}>
+            只采集淘宝客 <span>&nbsp;&nbsp;&nbsp;(勾选后只采集淘宝客商品)</span> </td>
+        </tr>
+        <tr style="display:none">
+          <th> 重复采集：</th>
+          <td><input type="checkbox" value="1" class="textinput" name="sn_repeat" size="10" {if $user_data.only_tbk} checked="checked" {/if}>
+            <span>&nbsp;&nbsp;&nbsp;(不同入驻商允许重复采集相同商品)</span> </td>
+        </tr>
+        <tr >
+          <td colspan=3><div align="left" style="font-weight:bold">————————————————————————————————————————————————————————————————————</div></td>
+        </tr>
+        <tr class="act">
+          <th>&nbsp;</th>
+          <td><input type="hidden" value="{$vo.content.session_key}" name="session_key_old" >
+            <input type="submit" class="submit_btn" value="保存设置" />
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+<script language="JavaScript">
+  /**
+   * 添加扩展分类
+   */
+  {literal}
+  function VeriUser()
+  {
+    session_key=document.forms['form'].elements['session_key'].value;
+	if(session_key=='')
+	{
+		alert('请输入授权码！');
+		return false;
+	}
+    Ajax.call('shops.php?is_ajax=1&act=yanzheng', "session_key="+session_key, VeriUserResponse, "GET", "JSON");
+  }
+  function VeriUserResponse(result)
+  {
+      if (result.error == 0)
+      {
+          alert(result.content);
+		  self.location='shops.php?act=tb_setting'; 
+      }
+  }
+  
+  function NmsInstall()
+  {
+    Ajax.call('shops.php?is_ajax=1&act=install', "", NmsInstallResponse, "GET", "JSON");
+  }
+  function NmsInstallResponse(result)
+  {
+      if (result.error == 0)
+      {
+          alert(result.content);
+      }
+  }
+  function NmsUpdate()
+  {
+    Ajax.call('shops.php?is_ajax=1&act=update', "", NmsUpdateResponse, "GET", "JSON");
+  }
+  function NmsUpdateResponse(result)
+  {
+      if (result.error == 0)
+      {
+          alert(result.content);
+		  self.location='shops.php?act=tb_setting'; 
+      }
+  }
+  function changeAction()
+  {	
+      var frm = document.forms['form'];
+
+	  document.getElementById("ztqz")	.style.display = frm.elements['space'].value 		== '' ? '' : 'none';
+	  document.getElementById("ztsm")	.style.display = frm.elements['space'].value 		== '' ? '' : 'none';
+	  document.getElementById("7access").style.display = frm.elements['space'].value 	== '7' ? '' : 'none';
+	  document.getElementById("7nsm")	.style.display = frm.elements['space'].value 		== '7' ? '' : 'none';
+	  document.getElementById("Oaccess").style.display = frm.elements['space'].value 	== 'OSS' ? '' : 'none';
+	  document.getElementById("OSSsm")	.style.display = frm.elements['space'].value 		== 'OSS' ? '' : 'none';
+  }
+  function changeAction_fy()
+  {	
+      var frm = document.forms['form'];
+
+	  document.getElementById("bd_appid_lab").style.display = frm.elements['engine'].value == '2' ? '' : 'none';
+	  document.getElementById("ms_appid_lab").style.display = frm.elements['engine'].value == '3' ? '' : 'none';
+	  
+	  document.getElementById("bdsm").style.display = frm.elements['engine'].value == '2' ? '' : 'none';
+	  document.getElementById("mssm").style.display = frm.elements['engine'].value == '3' ? '' : 'none';
+
+  }
+  {/literal}
+</script>
+{include file="pagefooter.htm"} 

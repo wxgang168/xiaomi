@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+<link href="index.css" rel="stylesheet" type="text/css" />
+<link href="lrtk.css" rel="stylesheet" type="text/css" />
+
+<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,index.js,jquery.js,popwin.js'}
+</head>
+<body>
+
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem --> 
+{insert_scripts files='xiaomi_index.js'}
+
+<div class="home-hero-container container">
+	<div class="home-hero">
+    	<div class="home-hero-slider">
+			<!--首页轮播 strat-->
+			<!-- #BeginLibraryItem "/library/index_ad.lbi" -->
+            <!-- #EndLibraryItem --> 
+			<!--首页轮播 end-->
+        </div>
+
+        <!--首页轮播下广告 strat-->
+        <div class="home-hero-sub row">
+            <div class="span4">
+            <!-- #BeginLibraryItem "/library/channel_list.lbi" -->
+            <!-- #EndLibraryItem -->
+            </div>
+            <div class="span16">
+            <!-- TemplateBeginEditable name="首页轮播下广告" -->
+            <!-- #BeginLibraryItem "/library/ad_position.lbi" -->
+            <!-- #EndLibraryItem -->
+            <!-- TemplateEndEditable -->
+            </div>
+        </div>
+        <!--首页轮播下广告 end-->
+
+    </div>
+    <!--小米明星单品（调用精品） start-->
+    <div class="home-star-goods xm-carousel-container">
+        <!-- TemplateBeginEditable name="小米明星单品（调用精品）" -->
+        <!-- #BeginLibraryItem "/library/recommend_best.lbi" -->
+        <!-- #EndLibraryItem -->
+        <!-- TemplateEndEditable -->
+    </div>
+</div>
+
+<!--页面主体-->
+<div class="page-main home-main">
+	<div class="container">
+	<!-- TemplateBeginEditable name="分类下商品区域" -->
+    <!-- #BeginLibraryItem "/library/cat_goods.lbi" -->
+    <!-- #EndLibraryItem -->
+
+    <!-- #BeginLibraryItem "/library/cat_goods.lbi" -->
+    <!-- #EndLibraryItem -->
+
+    <!-- #BeginLibraryItem "/library/cat_goods.lbi" -->
+    <!-- #EndLibraryItem -->
+
+    <!-- #BeginLibraryItem "/library/cat_goods.lbi" -->
+    <!-- #EndLibraryItem -->
+
+    <!-- TemplateEndEditable -->
+
+    <div class="home-star-goods recommend-for-you">
+        <!-- TemplateBeginEditable name="为您推荐（调用热卖）" -->
+        <!-- #BeginLibraryItem "/library/recommend_hot.lbi" -->
+        <!-- #EndLibraryItem -->
+        <!-- TemplateEndEditable -->
+        </div>
+      
+        <div id="hot-comment" class="home-review-box xm-plain-box J_itemBox J_reviewBox is-visible">
+            <!-- #BeginLibraryItem "/library/recommend_hot_comment.lbi" --><!-- #EndLibraryItem --> 
+        </div>
+
+        <div id="video" class="home-video-box xm-plain-box J_itemBox J_videoBox is-visible">
+            <!-- #BeginLibraryItem "/library/recommend_video.lbi" --><!-- #EndLibraryItem --> 
+        </div>
+    </div>
+</div>
+
+<div id="J_modalVideo" class="modal modal-video fade modal-hide">
+	<div class="modal-hd">
+    	<h3 class="title"></h3>
+        <a class="close"><i class="iconfont"></i></a>
+    </div>
+    <div class="modal-bd">
+    	<iframe width="880" height="536" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$("a.moquu_wmaps").on('click', function(){
+		popWin.showWin("800", "475", "TTshop", "http://www.oeob.net");
+	});
+	
+});
+</script>
+
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem --> 
+</body>
+</html>

@@ -1,0 +1,1 @@
+<?php exit;?>a:3:{s:8:"template";a:1:{i:0;s:80:"C:/HwsHostMaster/wwwroot/idashu.cc_765tm6/web/xiaomi_bak/themes/xiaomi/index.dwt";}s:7:"expires";i:1542462813;s:8:"maketime";i:1542459213;}

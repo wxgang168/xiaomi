@@ -1,0 +1,32 @@
+<!-- $Id: brand_search.htm 2015-02-10 derek $ -->
+<div style="float:left; height:36px;">
+   <div style="margin: 3px 2px;float: left;"> <img src="https://img.alicdn.com/imgextra/i3/619666972/TB2cTVzfmiK.eBjSZFyXXaS4pXa-619666972.jpg" width="29" height="29" border="0" alt="点击搜索商品类型"  onclick="is_searchtype();"/></div>
+  <div style=" display:none" id="div_type"> 
+     <input type="text" name="type_name" size="10" style="min-width:inherit" />
+    <input type="button" value="搜索类型" class="button" onclick="search_type()"/>
+  </div>
+</div>
+
+<script language="JavaScript">
+    function search_type()
+    {
+        type_name = Utils.trim(document.forms['theForm'].elements['type_name'].value);
+		Ajax.call('{$shopfile}.php?act=search_type', "type_name="+type_name, searchtypeResponse, "GET", "JSON");
+        
+    }
+    function searchtypeResponse(result)
+    {
+      if (result.error == 0)
+      {
+		document.forms[ "theForm" ].elements['goods_type_id'].innerHTML=result.content;
+		document.forms[ "theForm" ].elements['goods_type_id'].style.border='1px solid #e31939';
+      }
+
+	}
+	
+	function is_searchtype()
+	{	
+		document.getElementById("div_type").style.display = 'inline' ;
+	}
+
+</script>
