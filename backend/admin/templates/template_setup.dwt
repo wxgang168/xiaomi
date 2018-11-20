@@ -28,9 +28,6 @@
                             <input name="template_file" type="hidden" value="{$curr_template}" id="selLib_val">
                         </div>
                         <input type="submit" value="{$lang.button_submit}" class="btn btn30 red_btn mr10" />
-                        {if $curr_template eq 'index' && $cate_goods}
-                        <a href="set_floor_brand.php?filename={$curr_template}" class="btn btn30 red_btn">{$lang.floor_brand_setup}</a>
-                        {/if}
                         </form>
                     </div>
                     <div class="list-div mt20">

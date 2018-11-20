@@ -187,13 +187,13 @@ if ($_REQUEST['act'] == 'setup')
             /* 分类下的商品 */
             if (isset($db_dyna_libs[$val['region']][$val['library']]) && ($row = array_shift($db_dyna_libs[$val['region']][$val['library']])))
             {
-				$val['sort_order']++;
-                $cate_goods[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number' => $row['number'], 'cats'=>cat_list(0, $row['id']));
+				$cats = get_floor_cat_list($row['id']);
+                $cate_goods[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number' => $row['number'], 'cat_id'=>$row['id'], 'cats'=>$cats);
             }
             else
             {
-				$val['sort_order']++;
-                $cate_goods[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number'=>0, 'cats'=>cat_list(0));
+				$cats = get_floor_cat_list($row['id']);
+                $cate_goods[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number'=>0, 'cat_id'=>$row['id'], 'cats'=>$cats);
             }
         }
 
@@ -238,6 +238,7 @@ if ($_REQUEST['act'] == 'setup')
     }
 
     assign_query_info();
+    $smarty->assign('curr_template',$curr_template);
     $smarty->assign('ur_here',            $_LANG['03_template_setup']);
     $smarty->assign('curr_template_file', $curr_template);
     $smarty->assign('temp_options',       $temp_options);
@@ -246,10 +247,19 @@ if ($_REQUEST['act'] == 'setup')
     $smarty->assign('brand_goods',        $brand_goods);
     $smarty->assign('cat_articles',       $cat_articles);
     $smarty->assign('ad_positions',       $ad_positions);
-    $smarty->assign('arr_cates',          cat_list(0, 0, true));
     $smarty->assign('arr_brands',         get_brand_list());
     $smarty->assign('arr_article_cats',   article_cat_list(0, 0, true));
     $smarty->assign('arr_ad_positions',   get_position_list());
+        
+    $cat_list = get_floor_cat_list();
+    $smarty->assign('arr_cates',          $cat_list);
+    
+    if (defined('THEME_EXTENSION')) {
+        $smarty->assign('template_type', 1);
+    } else {
+        $smarty->assign('template_type', 0);
+    }
+
     $smarty->display('template_setup.dwt');
 }
 
@@ -934,5 +944,21 @@ function read_style_and_tpl($tpl_name, $tpl_style)
     $style_info['tpl_style'] = $tpl_style_list;
 
     return $style_info;
+}
+
+/**
+ * 楼层分类
+ */
+function get_floor_cat_list($cat_id = 0){
+    $cat_info = get_cat_info($cat_id);
+    $cat_list = cat_list(0, 1);
+    
+    
+    $arr = array(
+        'cat_info' => $cat_info,
+        'cat_list' => $cat_list,
+    );
+    
+    return $arr;
 }
 ?>

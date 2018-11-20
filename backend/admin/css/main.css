@@ -672,7 +672,7 @@ i.ice_b{ background-position:-336px -214px;}
 .system_table td.gray_bg{ background:#f7f7f7; width:18%;}
 
 /*操作提示*/
-.explanation{ padding:11px 13px; color:#707070; border-radius:5px; background-color:#f5faff; border:1px dashed #62b3ff; width:calc(100% - 28px); height:100%;}
+.explanation{ padding:11px 13px; color:#707070; border-radius:5px; background-color:#f5faff; border:1px dashed #62b3ff; width:calc(100% - 28px); height:auto;}
 .explanation .ex_tit{ color:#62b3ff; position:relative; line-height:20px; margin-bottom:10px;}
 .explanation .ex_tit:after{ content: ' '; display: block; clear: both; height: 0; visibility: hidden;}
 .explanation .ex_tit h4{ font-weight:normal; padding-left:30px; font-size:14px; float:left;}
