@@ -442,6 +442,7 @@ $_LANG['16_reg_fields'] = '会员注册项设置';
 /* 模板管理 */
 $_LANG['02_template_select'] = '模板选择';
 $_LANG['03_template_setup'] = '设置模板';
+$_LANG['07_template_home_page_banner'] = '首页轮播';
 $_LANG['04_template_library'] = '库项目管理';
 $_LANG['mail_template_manage'] = '邮件模板';
 $_LANG['05_edit_languages'] = '语言项编辑';

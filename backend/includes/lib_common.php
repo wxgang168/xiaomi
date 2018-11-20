@@ -25,6 +25,10 @@ if (!defined('IN_ECS'))
  *
  * @return   void
  */
+
+if (!defined(FRONTEND_ROOT_PATH)) {
+    define('FRONTEND_ROOT_PATH', str_replace('/backend', '', ROOT_PATH));
+}
 function db_create_in($item_list, $field_name = '', $not = '')
 {
     if(!empty($not)){
@@ -1649,7 +1653,6 @@ function get_snatch_result($id)
  */
 function clear_tpl_files($is_cache = true, $ext = '',$filename='')
 {
-    $ForentEndRoot = str_replace('/backend', '', ROOT_PATH);
     if(empty($filename)){
         $filename = "admin";
     }
@@ -1674,9 +1677,9 @@ function clear_tpl_files($is_cache = true, $ext = '',$filename='')
         $cache_dir = ROOT_PATH . $tmp_dir . '/caches/';
         $dirs[] = ROOT_PATH . $tmp_dir . '/query_caches/';
         $dirs[] = ROOT_PATH . $tmp_dir . '/static_caches/';
-        $cache_dir_fe = $ForentEndRoot . $tmp_dir . '/caches/';
-        $dirs[] = $ForentEndRoot . $tmp_dir . '/query_caches/';
-        $dirs[] = $ForentEndRoot . $tmp_dir . '/static_caches/';
+        $cache_dir_fe = FRONTEND_ROOT_PATH . $tmp_dir . '/caches/';
+        $dirs[] = FRONTEND_ROOT_PATH . $tmp_dir . '/query_caches/';
+        $dirs[] = FRONTEND_ROOT_PATH . $tmp_dir . '/static_caches/';
         for($i = 0; $i < 16; $i++)
         {
             $hash_dir = $cache_dir . dechex($i);
@@ -1689,8 +1692,8 @@ function clear_tpl_files($is_cache = true, $ext = '',$filename='')
     {
         $dirs[] = ROOT_PATH . $tmp_dir . '/compiled/';
         $dirs[] = ROOT_PATH . $tmp_dir . '/compiled/' . $filename.'/';
-        $dirs[] = $ForentEndRoot . $tmp_dir . '/compiled/';
-        $dirs[] = $ForentEndRoot . $tmp_dir . '/compiled/' . $filename.'/';
+        $dirs[] = FRONTEND_ROOT_PATH . $tmp_dir . '/compiled/';
+        $dirs[] = FRONTEND_ROOT_PATH . $tmp_dir . '/compiled/' . $filename.'/';
 
     }
 
@@ -3719,11 +3722,11 @@ function get_image_path($goods_id, $image = '', $thumb = false, $call = 'goods',
         
         if (!empty($image) && (strpos($image, 'http://') === false && strpos($image, 'https://') === false && strpos($image, 'errorImg.png') === false)) {
             if($return == 1){
-                $image = $GLOBALS['ecs']->url() . $image;
+                $image = str_replace('/backend', '', $GLOBALS['ecs']->url()) . $image;
             }elseif($return == 2){
-                $image = $GLOBALS['ecs']->seller_url() . $image;
+                $image = str_replace('/backend', '', $GLOBALS['ecs']->seller_url()) . $image;
             }else{
-                $image = $GLOBALS['ecs']->stores_url() . $image;
+                $image = str_replace('/backend', '', $GLOBALS['ecs']->stores_url()) . $image;
             }
         }
     }
@@ -3733,9 +3736,6 @@ function get_image_path($goods_id, $image = '', $thumb = false, $call = 'goods',
     }else{
         $url = empty($image) ? $GLOBALS['_CFG']['no_picture'] : $image;    
     }
-    // echo $GLOBALS['_CFG']['no_picture'];
-    // echo $GLOBALS['_CFG']['site_domain'];
-    // echo $image;
     return $url;
 }
 

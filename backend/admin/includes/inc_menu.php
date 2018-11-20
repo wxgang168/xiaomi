@@ -21,7 +21,7 @@ $modules['04_order']['11_order_detection'] = 'order.php?act=order_detection';
 
 //ecmoban模板堂 --zhuo start 批量导入
 $modules['04_order']['11_add_order']      = 'mc_order.php';
-//$modules['08_members']['11_users_add']    = 'mc_user.php';
+$modules['08_members']['11_users_add']    = 'mc_user.php';
 //ecmoban模板堂 --end
 
 //by li start
@@ -60,14 +60,14 @@ $modules['20_ectouch']['02_touch_nav_admin'] = 'touch_navigator.php?act=list'; /
 $modules['20_ectouch']['03_touch_ads'] = 'touch_ads.php?act=list';
 $modules['20_ectouch']['04_touch_ad_position'] = 'touch_ad_position.php?act=list';
 $modules['20_ectouch']['05_touch_dashboard'] = '../mobile/index.php?r=admin/editor';
-//$modules['20_ectouch']['09_topic']                = 'touch_topic.php?act=list';
+$modules['20_ectouch']['09_topic']                = 'touch_topic.php?act=list';
 
 $modules['21_cloud']['01_cloud_services']        = 'index.php?act=cloud_services';
 $modules['21_cloud']['02_platform_recommend']        = 'index.php?act=platform_recommend';
 $modules['21_cloud']['03_best_recommend']        = 'index.php?act=best_recommend';
 //ecmoban模板堂 --zhuo end
  
-// $modules['02_cat_and_goods']['001_goods_setting']    = 'goods.php?act=step_up'; // 商品设置
+$modules['02_cat_and_goods']['001_goods_setting']    = 'goods.php?act=step_up'; // 商品设置
 $modules['02_cat_and_goods']['01_goods_list']       = 'goods.php?act=list';         // 商品列表
 $modules['02_cat_and_goods']['03_category_manage']    = 'category.php?act=list';
 $modules['02_cat_and_goods']['05_comment_manage']   = 'comment_manage.php?act=list';
@@ -94,7 +94,7 @@ $modules['02_promotion']['08_group_buy']            = 'group_buy.php?act=list';
 $modules['02_promotion']['09_topic']                = 'topic.php?act=list';
 $modules['02_promotion']['10_auction']              = 'auction.php?act=list';
 $modules['02_promotion']['12_favourable']           = 'favourable.php?act=list';
-//$modules['02_promotion']['13_wholesale']            = 'wholesale.php?act=list';
+// $modules['02_promotion']['13_wholesale']            = 'wholesale.php?act=list';
 $modules['02_promotion']['14_package_list']         = 'package.php?act=list';
 //$modules['02_promotion']['ebao_commend']            = 'ebao_commend.php?act=list';
 $modules['02_promotion']['15_exchange_goods']       = 'exchange_goods.php?act=list';
@@ -116,9 +116,9 @@ $modules['02_promotion']['16_presale']     = 'presale.php?act=list';
 
 
 $modules['04_order']['02_order_list']               = 'order.php?act=list';
-//$modules['04_order']['03_order_query']              = 'order.php?act=order_query';
-//$modules['04_order']['04_merge_order']              = 'order.php?act=merge'; 已合并到订单列表
-//$modules['04_order']['05_edit_order_print']         = 'order.php?act=templates';
+$modules['04_order']['03_order_query']              = 'order.php?act=order_query';
+// $modules['04_order']['04_merge_order']              = 'order.php?act=merge'; 已合并到订单列表
+$modules['04_order']['05_edit_order_print']         = 'order.php?act=templates';
 $modules['04_order']['06_undispose_booking']        = 'goods_booking.php?act=list_all';
 //$modules['04_order']['07_repay_application']        = 'repay.php?act=list_all';
 $modules['04_order']['08_add_order']                = 'order.php?act=add';
@@ -129,9 +129,9 @@ $modules['04_order']['13_complaint']               = 'complaint.php?act=complain
 $modules['05_banner']['ad_position']                = 'ad_position.php?act=list';
 $modules['05_banner']['ad_list']                    = 'ads.php?act=list';
 
-//$modules['06_stats']['flow_stats']                  = 'flow_stats.php?act=view';
-//$modules['06_stats']['searchengine_stats']          = 'searchengine_stats.php?act=view';
-//$modules['06_stats']['z_clicks_stats']              = 'adsense.php?act=list';
+$modules['06_stats']['flow_stats']                  = 'flow_stats.php?act=view';
+$modules['06_stats']['searchengine_stats']          = 'searchengine_stats.php?act=view';
+$modules['06_stats']['z_clicks_stats']              = 'adsense.php?act=list';
 $modules['06_stats']['report_guest']                = 'guest_stats.php?act=list';
 $modules['06_stats']['report_order']                = 'order_stats.php?act=list';
 //$modules['06_stats']['report_sell']                 = 'sale_general.php?act=list';
@@ -146,7 +146,7 @@ $modules['07_content']['02_articlecat_list']        = 'articlecat.php?act=list';
 //$modules['07_content']['vote_list']                 = 'vote.php?act=list';
 //$modules['07_content']['article_auto']              = 'article_auto.php?act=list';
 //$modules['07_content']['shop_help']                 = 'shophelp.php?act=list_cat';
-//$modules['07_content']['shop_info']                 = 'shopinfo.php?act=list';
+$modules['07_content']['shop_info']                 = 'shopinfo.php?act=list';
 $modules['07_content']['03_visualnews']           = 'visualnews.php?act=visual'; //cms频道可视化
 
 $modules['08_members']['03_users_list']             = 'users.php?act=list';
@@ -185,12 +185,12 @@ $modules['01_system']['captcha_manage']             = 'captcha_manage.php?act=ma
 $modules['01_system']['ucenter_setup']              = 'integrate.php?act=setup&code=ucenter';
 $modules['01_system']['navigator']                  = 'navigator.php?act=list';
 
-// if($_CFG['openvisual'] == 1){ 
+// if($_CFG['openvisual'] == 1){
 //     //可视化装修首页
-//     $modules['12_template']['01_visualhome']            = 'visualhome.php?act=list';
+//     $modules['12_template']['01_visualhome']            = '/tt_admin/template.php?act=list';
 // }
-//模板设置
-// $modules['12_template']['03_template_setup']        = 'template.php?act=setup';
+
+// 模板设置
 
 $modules['13_backup']['02_db_manage']               = 'database.php?act=backup';
 $modules['13_backup']['03_db_optimize']             = 'database.php?act=optimize';
@@ -256,7 +256,7 @@ $modules['24_ecjia_sms']['04_ecjia_sms_template'] = 'ecjia_sms.php?act=list'; //
 
 // APP 留言反馈
 //$modules['26_ecjia_feedback']['02_ecjia_feedback_order'] = '../mobile/index.php?r=oauth/admin'; // 订单留言
-//$modules['26_ecjia_feedback']['04_ecjia_feedback_user'] = '../mobile/index.php?r=oauth/admin'; // 会员留言
+// $modules['26_ecjia_feedback']['04_ecjia_feedback_user'] = '../mobile/index.php?r=oauth/admin'; // 会员留言
 //$modules['26_ecjia_feedback']['06_ecjia_feedback_public'] = '../mobile/index.php?r=oauth/admin'; // 公共留言
 $modules['26_ecjia_feedback']['08_ecjia_feedback_mobile'] = 'ecjia_feedback.php?act=list'; // 手机资讯
 
@@ -315,7 +315,9 @@ $modules['19_self_support']['02_self_order_stats']        = 'offline_store.php?a
 $modules['19_self_support']['03_self_support_info']       = 'index.php?act=merchants_first';
 
 // //模板
-// $modules['12_template']['02_template_select']       = 'template.php?act=list';
+$modules['12_template']['07_template_home_page_banner']        = 'flashplay.php?act=custom_list';
+$modules['12_template']['03_template_setup']        = 'template.php?act=setup';
+$modules['12_template']['02_template_select']       = 'template.php?act=list';
 // $modules['12_template']['04_template_library']      = 'template.php?act=library';
 // $modules['12_template']['05_edit_languages']        = 'edit_languages.php?act=list';
 // $modules['12_template']['06_template_backup']       = 'template.php?act=backup_setting';
@@ -352,8 +354,8 @@ if($_CFG['region_store_enabled']){
 
 // 左侧菜单分类
 $menu_top['home'] = '00_home';//首页
-// $menu_top['menuplatform'] = '05_banner,07_content,08_members,10_priv_admin,01_system,13_backup,16_email_manage,12_template,19_self_support';//平台
-$menu_top['menuplatform'] = '05_banner,07_content,08_members,10_priv_admin,01_system,13_backup,16_email_manage,19_self_support';//平台
+$menu_top['menuplatform'] = '05_banner,07_content,08_members,10_priv_admin,01_system,13_backup,16_email_manage,12_template,19_self_support';//平台
+// $menu_top['menuplatform'] = '05_banner,07_content,08_members,10_priv_admin,01_system,13_backup,16_email_manage,19_self_support';//平台
 $menu_top['menushopping'] = '02_cat_and_goods,02_promotion,04_order,15_rec,17_merchants,18_batch_manage,03_goods_storage,supply_and_demand,18_region_store';//商城
 // $menu_top['menushopping'] = '02_cat_and_goods,02_promotion,04_order,09_crowdfunding,15_rec,17_merchants,18_batch_manage,03_goods_storage,supply_and_demand,18_region_store';//商城
 $menu_top['finance'] = '06_stats';//财务

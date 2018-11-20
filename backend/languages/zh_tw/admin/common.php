@@ -275,6 +275,7 @@ $_LANG['16_reg_fields'] = '會員註冊項設置';
 /* 模板管理 */
 $_LANG['02_template_select'] = '模板選擇';
 $_LANG['03_template_setup'] = '設置模板';
+$_LANG['07_template_home_page_banner'] = '首页轮播';
 $_LANG['04_template_library'] = '庫項目管理';
 $_LANG['mail_template_manage'] = '郵件模板';
 $_LANG['05_edit_languages'] = '語言項編輯';

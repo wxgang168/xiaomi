@@ -188,6 +188,7 @@ if (file_exists(MOBILE_BARGAIN)) {
 //模板管理
     $purview['02_template_select']   = 'template_select';
     $purview['03_template_setup']    = 'template_setup';
+    $purview['07_template_home_page_banner']    = 'template_home_page_banner';
     $purview['04_template_library']  = 'library_manage';
     $purview['05_edit_languages']    = 'lang_edit';
     $purview['06_template_backup']   = 'backup_setting';

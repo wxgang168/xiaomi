@@ -98,7 +98,7 @@
                                         <div class="tDiv">
                                             {if ($list.type == $lang.imgage)}
                                             <span class="show">
-                                                <a href="{if strpos($list.ad_code,'www')}{$list.ad_code}{else}../data/afficheimg/{$list.ad_code}{/if}" class="nyroModal"><i class="icon icon-picture" onmouseover="toolTip('<img src={if strpos($list.ad_code,'www')}{$list.ad_code}{else}../data/afficheimg/{$list.ad_code}{/if}>')" onmouseout="toolTip()"></i></a>
+                                                <a href="{if (strpos($list.ad_code,'www') || strpos($list.ad_code,'http'))}{$list.ad_code}{else}/data/afficheimg/{$list.ad_code}{/if}" class="nyroModal"><i class="icon icon-picture" onmouseover="toolTip('<img src={if (strpos($list.ad_code,'www') || strpos($list.ad_code,'http'))}{$list.ad_code}{else}/data/afficheimg/{$list.ad_code}{/if}>')" onmouseout="toolTip()"></i></a>
                                             </span>
                                             {/if}
                                         </div>

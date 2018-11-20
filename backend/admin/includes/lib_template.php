@@ -406,9 +406,9 @@ function get_template_info($template_name, $template_style='')
     {
         foreach ($ext AS $val)
         {
-            if (file_exists('../themes/' . $template_name . "/images/screenshot.$val"))
+            if (file_exists(FRONTEND_ROOT_PATH . '/themes/' . $template_name . "/images/screenshot.$val"))
             {
-                $info['screenshot'] = '../themes/' . $template_name . "/images/screenshot.$val";
+                $info['screenshot'] = '/themes/' . $template_name . "/images/screenshot.$val";
 
                 break;
             }
@@ -418,19 +418,19 @@ function get_template_info($template_name, $template_style='')
     {
         foreach ($ext AS $val)
         {
-            if (file_exists('../themes/' . $template_name . "/images/screenshot_$template_style.$val"))
+            if (file_exists(FRONTEND_ROOT_PATH . '/themes/' . $template_name . "/images/screenshot_$template_style.$val"))
             {
-                $info['screenshot'] = '../themes/' . $template_name . "/images/screenshot_$template_style.$val";
+                $info['screenshot'] = '/themes/' . $template_name . "/images/screenshot_$template_style.$val";
 
                 break;
             }
         }
     }
 
-    $css_path = '../themes/' . $template_name . '/style.css';
+    $css_path = FRONTEND_ROOT_PATH . '/themes/' . $template_name . '/style.css';
     if ($template_style != '')
     {
-        $css_path = '../themes/' . $template_name . "/style_$template_style.css";
+        $css_path = '/themes/' . $template_name . "/style_$template_style.css";
     }
     if (file_exists($css_path) && !empty($template_name))
     {
@@ -484,7 +484,7 @@ function get_template_region($tmp_name, $tmp_file, $lib=true)
 {
     global $dyna_libs;
 
-    $file = '../themes/' . $tmp_name . '/' . $tmp_file;
+    $file = FRONTEND_ROOT_PATH . '/themes/' . $tmp_name . '/' . $tmp_file;
 	
 	/* 判断文件是否存在 by wu */
 	if(!file_exists($file))

@@ -3,7 +3,8 @@
 /**
  * ECSHOP 管理中心模版管理程序
  * ============================================================================
- * * 版权所有2005-2006上海商创网络科技有限公司，并保留所有权利。！** 地址: http://lvruanjian.taobao.com ；
+ * * 版权所有 2005-2012 上海商派网络科技有限公司，并保留所有权利。
+ * 网站地址: http://www.ecshop.com；
  * ----------------------------------------------------------------------------
  * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和
  * 使用；不允许对程序代码以任何形式任何目的的再发布。
@@ -11,15 +12,17 @@
  * @author:     Weber Liu <weberliu@hotmail.com>
  * @version:    v2.1
  * ---------------------------------------------
- * $Author:liubo$
- * $Id: template.php 17217 2018-07-19 06:29:08Z liubo $
+ * $Author: liubo $
+ * $Id: template.php 17217 2011-01-19 06:29:08Z liubo $
 */
 
 define('IN_ECS', true);
 
 require(dirname(__FILE__) . '/includes/init.php');
 require_once('includes/lib_template.php');
-
+if (!defined(FRONTEND_ROOT_PATH)) {
+    define('FRONTEND_ROOT_PATH', str_replace('/backend', '', ROOT_PATH));
+}
 /*------------------------------------------------------ */
 //-- 模版列表
 /*------------------------------------------------------ */
@@ -33,12 +36,13 @@ if ($_REQUEST['act'] == 'list')
 
     /* 获得可用的模版 */
     $available_templates = array();
-    $template_dir        = @opendir(ROOT_PATH . 'themes/');
+    $template_dir        = @opendir(FRONTEND_ROOT_PATH . 'themes/');
     while ($file = readdir($template_dir))
     {
-        if ($file != '.' && $file != '..' && is_dir(ROOT_PATH. 'themes/' . $file) && $file != '.svn' && $file != 'index.dwt')
+        if ($file != '.' && $file != '..' && is_dir(FRONTEND_ROOT_PATH. 'themes/' . $file) && $file != '.svn' && $file != 'index.dwt')
         {
             $available_templates[] = get_template_info($file);
+            // print_r(get_template_info($file));
         }
     }
     @closedir($template_dir);
@@ -61,16 +65,15 @@ if ($_REQUEST['act'] == 'list')
         $sql .= " AND theme <> '".$tmp['code']."' ";
         $available_code[] = $tmp['code'];
     }
-    
-    $tmp_bak_dir = @opendir(ROOT_PATH . 'temp/backup/library/');
-    
-    if (file_exists(ROOT_PATH . 'temp/backup/library/') && $tmp_bak_dir) {
-        while ($file = readdir($tmp_bak_dir)) {
-            if ($file != '.' && $file != '..' && $file != '.svn' && $file != 'index.dwt' && is_file(ROOT_PATH . 'temp/backup/library/' . $file) == true) {
-                $code = substr($file, 0, strpos($file, '-'));
-                if (!in_array($code, $available_code)) {
-                    @unlink(ROOT_PATH . 'temp/backup/library/' . $file);
-                }
+    $tmp_bak_dir = @opendir(FRONTEND_ROOT_PATH . 'temp/backup/library/');
+    while ($file = readdir($tmp_bak_dir))
+    {
+        if ($file != '.' && $file != '..' && $file != '.svn' && $file != 'index.dwt' && is_file(FRONTEND_ROOT_PATH .'temp/backup/library/' . $file) == true)
+        {
+            $code = substr($file, 0, strpos($file, '-'));
+            if (!in_array($code, $available_code))
+            {
+                @unlink(FRONTEND_ROOT_PATH . 'temp/backup/library/' . $file);
             }
         }
     }
@@ -85,8 +88,6 @@ if ($_REQUEST['act'] == 'list')
     $smarty->assign('curr_template',       get_template_info($curr_template, $curr_style));
     $smarty->assign('available_templates', $available_templates);
     $smarty->display('templates_list.dwt');
-
-
 }
 
 /*------------------------------------------------------ */
@@ -154,7 +155,7 @@ if ($_REQUEST['act'] == 'setup')
     $cat_articles = array();
     $ad_positions = array();
 
-    $sql = "SELECT region, library, sort_order, id, number, type, floor_tpl FROM ".$ecs->table('template') ." ".
+    $sql = "SELECT region, library, sort_order, id, number, type FROM ".$ecs->table('template') ." ".
            "WHERE theme='$template_theme' AND filename='$curr_template' AND remarks='' ".
            "ORDER BY region, sort_order ASC ";
 
@@ -165,7 +166,7 @@ if ($_REQUEST['act'] == 'setup')
         if ($row['type'] > 0)
         {
             /* 动态内容 */
-            $db_dyna_libs[$row['region']][$row['library']][] = array('id' => $row['id'], 'number' => $row['number'], 'type' => $row['type'], 'floor_tpl'=>$row['floor_tpl']);
+            $db_dyna_libs[$row['region']][$row['library']][] = array('id' => $row['id'], 'number' => $row['number'], 'type' => $row['type']);
         }
         else
         {
@@ -177,28 +178,7 @@ if ($_REQUEST['act'] == 'setup')
             }
         }
     }
-    
-    //----------------------------------start
-    $server_domain = $ecs->get_domain();
-    $server_ip = get_server_ip();
 
-    $data = array(
-        'user_name' => $GLOBALS['_CFG']['shop_name'],
-        'user_mobile' => $GLOBALS['_CFG']['sms_shop_mobile'],
-        'server_ip' => $server_ip,
-        'server_domain' => $server_domain,
-        'qq_chat' => $GLOBALS['_CFG']['qq'],
-        'custom_key' => 'DCXJ2017161'
-    );
-
-    $url = "aHR0cDovL2FwaTIuZWNtb2Jhbi5jb20vP3VybD1lY21vYmFuL3ZhbGlkYXRlL2xpY2Vuc2U=";
-    $url = base64_decode($url);
-
-    $Http = new Http();
-    $sc_license = $Http->doPost($url, $data);
-    $sc_license = json_decode($sc_license, true);
-    //----------------------------------end
-    
     foreach ($temp_libs AS $val)
     {
         /* 对动态内容赋值 */
@@ -207,13 +187,13 @@ if ($_REQUEST['act'] == 'setup')
             /* 分类下的商品 */
             if (isset($db_dyna_libs[$val['region']][$val['library']]) && ($row = array_shift($db_dyna_libs[$val['region']][$val['library']])))
             {
-                $cats = get_floor_cat_list($row['id']);
-                $cate_goods[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number' => $row['number'],'cat_id'=>$row['id'], 'cats'=>$cats, 'floor_tpl'=>$row['floor_tpl']);
+				$val['sort_order']++;
+                $cate_goods[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number' => $row['number'], 'cats'=>cat_list(0, $row['id']));
             }
             else
             {
-                $cats = get_floor_cat_list();
-                $cate_goods[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number'=>0,'cat_id'=>$row['id'], 'cats'=>$cats, 'floor_tpl'=>$row['floor_tpl']);
+				$val['sort_order']++;
+                $cate_goods[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number'=>0, 'cats'=>cat_list(0));
             }
         }
 
@@ -235,11 +215,11 @@ if ($_REQUEST['act'] == 'setup')
         {
             if (isset($db_dyna_libs[$val['region']][$val['library']]) && ($row = array_shift($db_dyna_libs[$val['region']][$val['library']])))
             {
-                $cat_articles[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number' => $row['number'],'cat_articles_id'=>$row['id'], 'cat' => article_cat_list_new(0, $row['id']));
+                $cat_articles[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number' => $row['number'], 'cat' => article_cat_list(0, $row['id']));
             }
             else
             {
-                $cat_articles[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number'=>0, 'cat_articles_id'=>$row['id'],'cat'=>article_cat_list_new(0));
+                $cat_articles[] = array('region' => $val['region'], 'sort_order' => $val['sort_order'], 'number'=>0, 'cat'=>article_cat_list(0));
             }
         }
 
@@ -258,8 +238,6 @@ if ($_REQUEST['act'] == 'setup')
     }
 
     assign_query_info();
-    //by wang 首页楼层品牌关联
-    $smarty->assign('curr_template',$curr_template);
     $smarty->assign('ur_here',            $_LANG['03_template_setup']);
     $smarty->assign('curr_template_file', $curr_template);
     $smarty->assign('temp_options',       $temp_options);
@@ -268,19 +246,10 @@ if ($_REQUEST['act'] == 'setup')
     $smarty->assign('brand_goods',        $brand_goods);
     $smarty->assign('cat_articles',       $cat_articles);
     $smarty->assign('ad_positions',       $ad_positions);
+    $smarty->assign('arr_cates',          cat_list(0, 0, true));
     $smarty->assign('arr_brands',         get_brand_list());
-    $smarty->assign('arr_article_cats',   article_cat_list_new(0, 0, true));
+    $smarty->assign('arr_article_cats',   article_cat_list(0, 0, true));
     $smarty->assign('arr_ad_positions',   get_position_list());
-    
-    $cat_list = get_floor_cat_list();
-    $smarty->assign('arr_cates',          $cat_list);
-    
-    if (defined('THEME_EXTENSION')) {
-        $smarty->assign('template_type', 1);
-    } else {
-        $smarty->assign('template_type', 0);
-    }
-
     $smarty->display('template_setup.dwt');
 }
 
@@ -291,19 +260,6 @@ if ($_REQUEST['act'] == 'setup')
 if ($_REQUEST['act'] == 'setting')
 {
     admin_priv('template_setup');
-	
-	//首页楼层分类重复 by wu
-	if(isset($_POST['categories']['cat_goods']) && ($_POST['categories']['cat_goods']!=array_unique($_POST['categories']['cat_goods'])))
-	{
-		$lnk[] = array('text' => $_LANG['go_back'], 'href' => 'javascript:history.back(-1)');
-		sys_msg($_LANG['category_repeat'], 0, $lnk);
-	}
-	//首页楼层序号重复 by wu
-	if(isset($_POST['sort_order']['cat_goods']) && ($_POST['sort_order']['cat_goods']!=array_unique($_POST['sort_order']['cat_goods'])))
-	{
-		$lnk[] = array('text' => $_LANG['go_back'], 'href' => 'javascript:history.back(-1)');
-		sys_msg($_LANG['number_repeat'], 0, $lnk);
-	}	
 
     $curr_template = $_CFG['template'];
     $db->query("DELETE FROM " .$ecs->table('template'). " WHERE remarks = '' AND filename = '$_POST[template_file]' AND theme = '$curr_template'");
@@ -330,13 +286,12 @@ if ($_REQUEST['act'] == 'setting')
             if ($_POST['categories']['cat_goods'][$key] != '' && intval($_POST['categories']['cat_goods'][$key]) > 0)
             {
                 $sql = "INSERT INTO " .$ecs->table('template'). " (".
-                            "theme, filename, region, library, sort_order, type, id, number, floor_tpl".
+                            "theme, filename, region, library, sort_order, type, id, number".
                         ") VALUES (".
                             "'$curr_template', ".
                             "'$_POST[template_file]', '" .$val. "', '/library/cat_goods.lbi', ".
                             "'" .$_POST['sort_order']['cat_goods'][$key]. "', 1, '" .$_POST['categories']['cat_goods'][$key].
                             "', '" .$_POST['number']['cat_goods'][$key]. "'".
-							", '" .$_POST['categories']['floor_tpl'][$key]. "'".
                         ")";
                 $db->query($sql);
             }
@@ -483,7 +438,8 @@ if ($_REQUEST['act'] == 'setting')
     usort($post_regions, "array_sort");
 
     /* 修改模板文件 */
-    $template_content = read_static_flie_cache($_POST['template_file'], "dwt", ROOT_PATH . '/themes/' . $curr_template . '/');
+    $template_file    = FRONTEND_ROOT_PATH . '/themes/' . $curr_template . '/' . $_POST['template_file'] . '.dwt';
+    $template_content = file_get_contents($template_file);
     $template_content = str_replace("\xEF\xBB\xBF", '', $template_content);
     $org_regions      = get_template_region($curr_template, $_POST['template_file'].'.dwt', false);
 
@@ -499,12 +455,11 @@ if ($_REQUEST['act'] == 'setting')
         {
             if ($lib['region'] == $region)
             {
-                if (!file_exists('../themes/' . $curr_template . $lib['library']))
+                if (!file_exists(FRONTEND_ROOT_PATH . '/themes/' . $curr_template . $lib['library']))
                 {
                     continue;
                 }
-
-                $lib_content = read_static_flie_cache(ROOT_PATH . '/themes/' . $curr_template . $lib['library']);
+                $lib_content     = file_get_contents(FRONTEND_ROOT_PATH . '/themes/' . $curr_template . $lib['library']);
                 $lib_content     = preg_replace('/<meta\\shttp-equiv=["|\']Content-Type["|\']\\scontent=["|\']text\/html;\\scharset=.*["|\']>/i', '', $lib_content);
                 $lib_content     = str_replace("\xEF\xBB\xBF", '', $lib_content);
                 $region_content .= sprintf($lib_template, $lib['library'], $lib_content);
@@ -514,10 +469,10 @@ if ($_REQUEST['act'] == 'setting')
         /* 替换原来区域内容 */
         $template_content = preg_replace(sprintf($pattern, $region), sprintf($replacement , $region_content), $template_content);
     }
-    
-    $template_file = write_static_file_cache($_POST['template_file'], $template_content, "dwt", ROOT_PATH . '/themes/' . $curr_template . '/');
-    if ($template_file)
+
+    if (file_put_contents($template_file, $template_content))
     {
+        //clear_tpl_files(false, '.dwt.php'); // 清除对应的编译文件
         clear_cache_files();
         $lnk[] = array('text' => $_LANG['go_back'], 'href'=>'template.php?act=setup&template_file=' .$_POST['template_file']);
         sys_msg($_LANG['setup_success'], 0, $lnk);
@@ -542,9 +497,9 @@ if ($_REQUEST['act'] == 'library')
     while ($row = $db->FetchRow($rs))
     {
         /* 取得语言项 */
-        if (file_exists(ROOT_PATH . 'plugins/'.$row['code'].'/languages/common_'.$_CFG['lang'].'.php'))
+        if (file_exists(FRONTEND_ROOT_PATH . 'plugins/'.$row['code'].'/languages/common_'.$_CFG['lang'].'.php'))
         {
-            include_once(ROOT_PATH . 'plugins/'.$row['code'].'/languages/common_'.$_CFG['lang'].'.php');
+            include_once(FRONTEND_ROOT_PATH . 'plugins/'.$row['code'].'/languages/common_'.$_CFG['lang'].'.php');
         }
     }
     $curr_template = $_CFG['template'];
@@ -629,14 +584,14 @@ if ($_REQUEST['act'] == 'backup')
     $tpl= $_CFG['template'];
     //$tpl = trim($_REQUEST['tpl_name']);
 
-    $filename = '../temp/backup/' . $tpl . '_' . date('Ymd') . '.zip';
+    $filename = 'temp/backup/' . $tpl . '_' . date('Ymd') . '.zip';
 
     $zip = new PHPZip;
-    $done = $zip->zip('../themes/' . $tpl . '/', $filename);
+    $done = $zip->zip(FRONTEND_ROOT_PATH . '/themes/' . $tpl . '/', FRONTEND_ROOT_PATH . $filename);
 
     if ($done)
     {
-        make_json_result($filename);
+        make_json_result('/' . $filename);
     }
     else
     {
@@ -667,15 +622,12 @@ if ($_REQUEST['act'] == 'update_library')
     $html = stripslashes(json_str_iconv($_POST['html']));
     $lib_file = '../themes/' . $_CFG['template'] . '/library/' . $_POST['lib'] . '.lbi';
     $lib_file = str_replace("0xa", '', $lib_file); // 过滤 0xa 非法字符
-    
-    $org_html = read_static_flie_cache($_POST['lib'], 'lbi', ROOT_PATH . '/themes/' . $_CFG['template'] . '/library/');
-    $org_html = str_replace("\xEF\xBB\xBF", '', $org_html);
-    
-    $lib_file_html = write_static_file_cache($_POST['lib'], $html, 'lbi', ROOT_PATH . '/themes/' . $_CFG['template'] . '/library/');
-    
-    if (@file_exists($lib_file) === true && $lib_file_html)
+
+    $org_html = str_replace("\xEF\xBB\xBF", '', file_get_contents($lib_file));
+
+    if (@file_exists($lib_file) === true && @file_put_contents($lib_file, $html))
     {
-        write_static_file_cache($_CFG['template'] . '-' . $_POST['lib'], $org_html, 'lbi', ROOT_PATH . '/temp/backup/library/');
+        @file_put_contents('../temp/backup/library/' . $_CFG['template'] . '-' . $_POST['lib'] . '.lbi', $org_html);
 
         make_json_result('', $_LANG['update_lib_success']);
     }
@@ -699,13 +651,11 @@ if ($_REQUEST['act'] == 'restore_library')
 
     if (file_exists($lib_backup) && filemtime($lib_backup) >= filemtime($lib_file))
     {
-        $lib_backup = read_static_flie_cache($lib_backup);
-        make_json_result(str_replace("\xEF\xBB\xBF", '', $lib_backup));
+        make_json_result(str_replace("\xEF\xBB\xBF", '',file_get_contents($lib_backup)));
     }
     else
     {
-        $lib_file = read_static_flie_cache($lib_file);
-        make_json_result(str_replace("\xEF\xBB\xBF", '', $lib_file));
+        make_json_result(str_replace("\xEF\xBB\xBF", '',file_get_contents($lib_file)));
     }
 }
 
@@ -738,6 +688,7 @@ if ($_REQUEST['act'] == 'backup_setting')
     $smarty->assign('list',  $remarks);
     $smarty->assign('files', $files);
     $smarty->display('templates_backup.dwt');
+    print_r($remarks);
 }
 
 if ($_REQUEST['act'] == 'act_backup_setting')
@@ -796,32 +747,31 @@ if ($_REQUEST['act'] == 'restore_backup')
             $data = array();
             foreach ($arr as $val)
             {
-                if (file_exists(ROOT_PATH . 'themes/' . $_CFG['template'] . $val['library'])) {
-                    $lib_content = read_static_flie_cache(ROOT_PATH . 'themes/' . $_CFG['template'] . $val['library']);
-                    
-                    //去除lib头部
-                    $lib_content = preg_replace('/<meta\\shttp-equiv=["|\']Content-Type["|\']\\scontent=["|\']text\/html;\\scharset=utf-8"|\']>/i', '', $lib_content);
-                    //去除utf bom
-                    $lib_content = str_replace("\xEF\xBB\xBF", '', $lib_content);
-                    //加入dw 标识
-                    $lib_content = '<!-- #BeginLibraryItem "' . $val['library'] . "\" -->\r\n" . $lib_content . "\r\n" . '<!-- #EndLibraryItem -->';
-                    if (isset($data[$val['filename']][$val['region']])) {
-                        $data[$val['filename']][$val['region']] .= $lib_content;
-                    } else {
-                        $data[$val['filename']][$val['region']] = $lib_content;
-                    }
+                $lib_content     = file_get_contents(FRONTEND_ROOT_PATH . '/themes/' . $_CFG['template'] . $val['library']);
+                //去除lib头部
+                $lib_content     = preg_replace('/<meta\\shttp-equiv=["|\']Content-Type["|\']\\scontent=["|\']text\/html;\\scharset=utf-8"|\']>/i', '', $lib_content);
+                //去除utf bom
+                $lib_content     = str_replace("\xEF\xBB\xBF", '', $lib_content);
+                //加入dw 标识
+                $lib_content     = '<!-- #BeginLibraryItem "' . $val['library'] . "\" -->\r\n" . $lib_content . "\r\n" . '<!-- #EndLibraryItem -->';
+                if (isset($data[$val['filename']][$val['region']]))
+                {
+                    $data[$val['filename']][$val['region']] .= $lib_content;
+                }
+                else
+                {
+                    $data[$val['filename']][$val['region']] = $lib_content;
                 }
             }
 
             foreach ($data as $file => $regions)
             {
                 $pattern = '/(?:<!--\\s*TemplateBeginEditable\\sname="('. implode('|',array_keys($regions)) .')"\\s*-->)(?:.*?)(?:<!--\\s*TemplateEndEditable\\s*-->)/se';
-                $template_content = read_static_flie_cache($file, 'dwt', ROOT_PATH . 'themes/' . $_CFG['template'] . '/');
-                
+                $temple_file = FRONTEND_ROOT_PATH . '/themes/' . $_CFG['template'] . '/' . $file . '.dwt';
+                $template_content = file_get_contents($temple_file);
                 $match = array();
                 $template_content = preg_replace($pattern, "'<!-- TemplateBeginEditable name=\"\\1\" -->\r\n' . \$regions['\\1'] . '\r\n<!-- TemplateEndEditable -->';", $template_content);
-                
-                write_static_file_cache($file, $template_content, "dwt", ROOT_PATH . 'themes/' . $_CFG['template'] . '/');
+                file_put_contents($temple_file, $template_content);
             }
 
             /* 文件修改成功后，恢复数据库 */
@@ -868,9 +818,7 @@ function load_library($curr_template, $lib_name)
 
     $lib_file    = '../themes/' . $curr_template . '/library/' . $lib_name . '.lbi';
     $arr['mark'] = file_mode_info($lib_file);
-    
-    $lib_file_html = read_static_flie_cache($lib_name, 'lbi', ROOT_PATH . '/themes/' . $curr_template . '/library/');
-    $arr['html'] = str_replace("\xEF\xBB\xBF", '', $lib_file_html);
+    $arr['html'] = str_replace("\xEF\xBB\xBF", '', file_get_contents($lib_file));
 
     return $arr;
 }
@@ -894,7 +842,7 @@ function read_tpl_style($tpl_name, $flag=1)
     $temp = '';
     $start = 0;
     $available_templates = array();
-    $dir = ROOT_PATH . 'themes/' . $tpl_name . '/';
+    $dir = FRONTEND_ROOT_PATH . 'themes/' . $tpl_name . '/';
     $tpl_style_dir = @opendir($dir);
     while ($file = readdir($tpl_style_dir))
     {
@@ -905,7 +853,6 @@ function read_tpl_style($tpl_name, $flag=1)
                 $start = strpos($file, '.');
                 $temp = substr($file, 0, $start);
                 $temp = explode('_', $temp);
-
                 if (count($temp) == 2)
                 {
                     $available_templates[] = $temp[1];
@@ -913,7 +860,6 @@ function read_tpl_style($tpl_name, $flag=1)
             }
         }
     }
-
     @closedir($tpl_style_dir);
 
     if ($flag == 1)
@@ -940,7 +886,6 @@ function read_tpl_style($tpl_name, $flag=1)
     elseif ($flag == 2)
     {
         $templates_temp = array('');
-
         if (count($available_templates) > 0)
         {
             foreach ($available_templates as $value)
@@ -989,20 +934,5 @@ function read_style_and_tpl($tpl_name, $tpl_style)
     $style_info['tpl_style'] = $tpl_style_list;
 
     return $style_info;
-}
-
-/**
- * 楼层分类
- */
-function get_floor_cat_list($cat_id = 0){
-    $cat_info = get_cat_info($cat_id);
-    $cat_list = cat_list(0, 1);
-    
-    $arr = array(
-        'cat_info' => $cat_info,
-        'cat_list' => $cat_list,
-    );
-    
-    return $arr;
 }
 ?>

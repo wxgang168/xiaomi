@@ -273,6 +273,7 @@ $_LANG['16_reg_fields'] = 'Register options settings';
 /* Template management */
 $_LANG['02_template_select'] = 'Select Template';
 $_LANG['03_template_setup'] = 'Setup Template';
+$_LANG['07_template_home_page_banner'] = '首页轮播';
 $_LANG['04_template_library'] = 'Library Item';
 $_LANG['mail_template_manage'] = 'Mail Template';
 $_LANG['05_edit_languages'] = 'Language Item';
