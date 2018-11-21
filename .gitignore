@@ -2,6 +2,7 @@
 .git/**
 temp/**
 .DS_Store/**
+pack/**
 *.png
 *.jpg
 *.swf
